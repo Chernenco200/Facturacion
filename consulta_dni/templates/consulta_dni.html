@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consulta DNI</title>
+</head>
+<body>
+    <h1>Consulta DNI</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="dni">DNI:</label>
+        <input type="text" id="dni" name="dni" required>
+        <button type="submit">Consultar</button>
+    </form>
+    {% if data %}
+        <h2>Resultado:</h2>
+        <p>Nombre: {{ data.nombre }}</p>
+    {% endif %}
+</body>
+</html>
