@@ -7,7 +7,7 @@ def consulta_dni(request):
         dni = request.POST.get('dni')
         url = f"https://api.sunat.gob.pe/v1/dni/{dni}"
         headers = {
-            'Authorization': 'Bearer TU_TOKEN_DE_API'
+            'Authorization': 'Bearer 04e62642-a3f2-4af2-821c-f1e0b3fb3f45'
         }
         response = requests.get(url, headers=headers)
         data = response.json()
