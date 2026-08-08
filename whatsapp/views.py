@@ -26,6 +26,7 @@ from django.contrib import messages
 from django.core.files.base import ContentFile
 
 VERIFY_TOKEN = os.environ.get("VERIFY_TOKEN")
+FACEBOOK_VERIFY_TOKEN = "optica_ic_facebook_2026"
 
 
 def enviar_menu_principal(numero):
@@ -576,6 +577,39 @@ def whatsapp_webhook(request):
         return JsonResponse({"status": "ok"})
 
     return HttpResponse("Método no permitido", status=405)
+
+
+@csrf_exempt
+def webhook_facebook(request):
+
+    # ==========================================
+    # VERIFICACIÓN DEL WEBHOOK POR META
+    # ==========================================
+    if request.method == "GET":
+
+        mode = request.GET.get("hub.mode")
+        token = request.GET.get("hub.verify_token")
+        challenge = request.GET.get("hub.challenge")
+
+        if mode == "subscribe" and token == FACEBOOK_VERIFY_TOKEN:
+            print("FACEBOOK WEBHOOK VERIFICADO")
+            return HttpResponse(challenge, status=200)
+
+        print("ERROR VERIFICANDO FACEBOOK WEBHOOK")
+        return HttpResponse("Token de verificación incorrecto", status=403)
+
+    # ==========================================
+    # MENSAJES ENTRANTES
+    # Lo programaremos en el siguiente paso
+    # ==========================================
+    if request.method == "POST":
+        print("WEBHOOK FACEBOOK RECIBIDO")
+        print(request.body)
+
+        return HttpResponse("EVENT_RECEIVED", status=200)
+
+    return HttpResponse(status=405)
+
 
 
 def consultar_estado_ticket(numero, texto_ticket):

@@ -9,4 +9,11 @@ urlpatterns = [
     path("whatsapp/bandeja/", views.bandeja_whatsapp, name="bandeja_whatsapp"),
     path("whatsapp/chat/<str:numero>/", views.chat_whatsapp, name="chat_whatsapp"),
     path("whatsapp/chat/<str:numero>/modo/", views.cambiar_modo_whatsapp, name="cambiar_modo_whatsapp"),
+
+    path(
+        "webhook/facebook/",
+        views.webhook_facebook,
+        name="webhook_facebook"
+    ),
+
 ]

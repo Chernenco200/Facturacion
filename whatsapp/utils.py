@@ -522,7 +522,20 @@ def enviar_whatsapp_pdf(numero, media_id, filename="documento.pdf", caption=""):
     print("ENVIAR PDF STATUS:", response.status_code)
     print("ENVIAR PDF RESPUESTA:", response.text)
 
-    return response.status_code in [200, 201]
+    if response.status_code not in [200, 201]:
+        return None
+
+    respuesta = response.json()
+    mensajes = respuesta.get("messages", [])
+
+    if not mensajes:
+        return None
+
+    wa_message_id = mensajes[0].get("id")
+
+    print("PDF WA_MESSAGE_ID:", wa_message_id)
+
+    return wa_message_id
 
 def enviar_whatsapp_imagen(numero, media_id, caption=""):
     access_token = os.environ.get("WHATSAPP_ACCESS_TOKEN")
@@ -556,9 +569,20 @@ def enviar_whatsapp_imagen(numero, media_id, caption=""):
 
     print("ENVIAR IMAGEN STATUS:", response.status_code)
     print("ENVIAR IMAGEN RESPUESTA:", response.text)
+    if response.status_code not in [200, 201]:
+        return None
 
-    return response.status_code in [200, 201]
+    respuesta = response.json()
+    mensajes = respuesta.get("messages", [])
 
+    if not mensajes:
+        return None
+
+    wa_message_id = mensajes[0].get("id")
+
+    print("IMAGEN WA_MESSAGE_ID:", wa_message_id)
+
+    return wa_message_id
 
 from django.core.files.base import ContentFile
 def descargar_media_whatsapp(media_id):
